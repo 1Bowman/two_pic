@@ -8,6 +8,7 @@ from .. import db
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
 @main.route('/', methods=['GET', 'POST'])
 def index():
     # form = NameForm()
@@ -23,9 +24,7 @@ def upload():
         image = request.files['image']
         if image.filename == '':
             return redirect(request.url)
-        print('==== {}'.format(image.filename.split('.')[1]))
         if image and image.filename.split('.')[1] in ['jpg', 'jpeg', 'png', 'bmp']:
-            print('=== shit')
             filename = secure_filename(image.filename)
             image.save(os.path.join(basedir, 'user_content', filename))
             return redirect(url_for('main.uploaded_file', filename=filename))
