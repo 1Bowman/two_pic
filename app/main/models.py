@@ -9,7 +9,12 @@ class Post(db.Model):
     first_name = db.Column(db.String(32))
     last_name = db.Column(db.String(32))
     description = db.Column(db.String(140), nullable=True)
+    filename = db.Column(db.String(256))
 
     def __repr__(self):
         return '<Post {}>'.format(self.id)
 
+
+# class Count(db.Model):
+#     __tablename__  = 'COUNT_TBL'
+#     count = db.Column(db.Integer)

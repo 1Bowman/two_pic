@@ -5,6 +5,7 @@ from config import config
 
 db = SQLAlchemy()
 bootstrap = Bootstrap()
+# basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 def create_app(config_name):
