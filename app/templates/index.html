@@ -4,13 +4,15 @@
     <h1>Vote for your favorite picture!</h1>
     <div class="row">
         <div class="col-md-6">
-            <a href="#" class="thumbnail">
-                <img src="{{ pic1 }}" alt="{{ pic1.description }}" style="height: 512px; width=100%;">
+            <a href="{{ url_for('main.index') }}" class="thumbnail">
+                <img src="{{ pic1_filename }}" alt="{{ pic1.description }}" style="height: 512px; width:100%;">
+                <h2 style="text-align: center">{{ pic1.description }}</h2>
             </a>
         </div>
         <div class="col-md-6">
-            <a href="#" class="thumbnail">
-                <img src="{{ pic2 }}" alt="{{ pic2.description }}" style="height: 512px; width=100%;">
+            <a href="{{ url_for('main.index') }}" class="thumbnail">
+                <img src="{{ pic2_filename }}" alt="{{ pic2.description }}" style="height: 512px; width=100%;">
+                <h2 style="text-align: center">{{ pic2.description }}</h2>
             </a>
         </div>
     </div>

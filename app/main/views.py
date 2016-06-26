@@ -6,18 +6,31 @@ from . import main
 from .forms import UploadForm
 from app import db
 from app.main.models import Post
+from sqlalchemy import func, create_engine
+from sqlalchemy.orm import sessionmaker
+from config import basedir
+from random import randint
 
-basedir = os.path.abspath(os.path.dirname(__file__))
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    picture1 = Post.query.get(1)
-    picture2 = Post.query.get(2)
+    # hook up database functions
+    Session = sessionmaker()
+    # locate the db location; currently hardcoded to development database
+    engine = create_engine('sqlite:///{0}\data-dev.sqlite'.format(basedir))
+    Session.configure(bind=engine)
+    session = Session()
 
-    picture1 = url_for('static', filename=picture1.filename)
-    picture2 = url_for('static', filename=picture2.filename)
+    post_count = session.query(func.count(Post.id)).scalar()  # count number of unique posts in the table
+    pic1 = Post.query.get(randint(1, post_count))
+    pic2 = None
+    while pic2 == pic1 or pic2 is None:  # Don't pick the same file
+        pic2 = Post.query.get(randint(1, post_count))
 
-    return render_template('index.html', pic1=picture1, pic2=picture2)
+    pic1_filename = url_for('static', filename=pic1.filename)
+    pic2_filename = url_for('static', filename=pic2.filename)
+
+    return render_template('index.html', pic1=pic1, pic2=pic2, pic1_filename=pic1_filename, pic2_filename=pic2_filename)
 
 
 @main.route('/upload', methods=['GET', 'POST'])
@@ -33,10 +46,11 @@ def upload():
         if image.filename == '':
             return redirect(request.url)
 
+        # Check that our filename is in the 'approved' array
         if image and image.filename.split('.')[1] in ['jpg', 'jpeg', 'png', 'bmp']:
             # name and save the file
             filename = secure_filename(image.filename)
-            image.save(os.path.join(basedir, 'static', filename))
+            image.save(os.path.join(basedir, 'app', 'static', filename))
 
             # add our new post to the database
             post = Post(datetime=datetime.utcnow(), email=form.email.data,
@@ -53,7 +67,7 @@ def upload():
 @main.route('/uploads/<filename>')
 def uploaded_file(filename):
     # return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-    return send_from_directory(os.path.join(basedir, 'user_content'), filename)
+    return send_from_directory(os.path.join(basedir, 'app', 'static'), filename)
 
 
 @main.route('/<name>')
