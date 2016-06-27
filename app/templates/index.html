@@ -1,19 +1,26 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <h1>Vote for your favorite picture!</h1>
-    <div class="row">
-        <div class="col-md-6">
-            <a href="{{ url_for('main.index') }}" class="thumbnail">
-                <img src="{{ pic1_filename }}" alt="{{ pic1.description }}" style="height: 512px; width:100%;">
-                <h2 style="text-align: center">{{ pic1.description }}</h2>
-            </a>
-        </div>
-        <div class="col-md-6">
-            <a href="{{ url_for('main.index') }}" class="thumbnail">
-                <img src="{{ pic2_filename }}" alt="{{ pic2.description }}" style="height: 512px; width=100%;">
-                <h2 style="text-align: center">{{ pic2.description }}</h2>
-            </a>
+    <div>
+        <h1 style="text-align: center;">Vote for your favorite picture!</h1>
+    </div>
+    <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-xs-6 col-lg-3">
+                <a href="{{ url_for('main.index') }}" class="thumbnail">
+                    <img src="{{ pic1_filename }}" alt="{{ pic1.description }}" style="height:300px;">
+                    <h2 style="text-align: center">{{ pic1.description }}</h2>
+                </a>
+            </div>
+            <div class="col-xs-6 col-lg-3">
+                <a href="{{ url_for('main.index') }}" class="thumbnail">
+                    <img src="{{ pic2_filename }}" alt="{{ pic2.description }}" style="height:300px;">
+                    <h2 style="text-align: center">{{ pic2.description }}</h2>
+                </a>
+            </div>
+            <div class="col-lg-3"></div>
         </div>
     </div>
 {% endblock %}
