@@ -10,6 +10,7 @@ class Post(db.Model):
     last_name = db.Column(db.String(32))
     description = db.Column(db.String(140), nullable=True)
     filename = db.Column(db.String(256))
+    total_votes = db.Column(db.Integer, default=0)
 
     def __repr__(self):
         return '<Post {}>'.format(self.id)

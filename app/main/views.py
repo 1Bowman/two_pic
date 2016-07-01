@@ -14,6 +14,11 @@ from random import randint
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
+
+    # Grab the choice variable passed from POST
+    # for x in request.args['choice']:
+    #   print('in args: {}'.format(x))
+
     # hook up database functions
     Session = sessionmaker()
     # locate the db location; currently hardcoded to development database
@@ -68,6 +73,19 @@ def upload():
 def uploaded_file(filename):
     # return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
     return send_from_directory(os.path.join(basedir, 'app', 'static'), filename)
+
+
+@main.route('/choice/<id>')
+def update_count(id):
+    Session = sessionmaker()
+    engine = create_engine('sqlite:///{0}\data-dev.sqlite'.format(basedir))
+    Session.configure(bind=engine)
+    session = Session()
+
+    curr_usr = session.query(Post).get(id)
+    session.query(Post).filter_by(id=id).update({'total_votes': curr_usr.total_votes+1})
+    session.commit()
+    return redirect(url_for('main.index'))
 
 
 @main.route('/<name>')

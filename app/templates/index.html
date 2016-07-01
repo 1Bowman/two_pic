@@ -9,13 +9,13 @@
         <div class="row">
             <div class="col-lg-3"></div>
             <div class="col-xs-6 col-lg-3">
-                <a href="{{ url_for('main.index') }}" class="thumbnail">
+                <a href="{{ url_for('main.update_count', id=pic1.id) }}" class="thumbnail">
                     <img src="{{ pic1_filename }}" alt="{{ pic1.description }}" style="height:300px;">
                     <h2 style="text-align: center">{{ pic1.description }}</h2>
                 </a>
             </div>
             <div class="col-xs-6 col-lg-3">
-                <a href="{{ url_for('main.index') }}" class="thumbnail">
+                <a href="{{ url_for('main.update_count', id=pic2.id) }}" class="thumbnail">
                     <img src="{{ pic2_filename }}" alt="{{ pic2.description }}" style="height:300px;">
                     <h2 style="text-align: center">{{ pic2.description }}</h2>
                 </a>
