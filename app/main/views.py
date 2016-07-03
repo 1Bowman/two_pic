@@ -75,16 +75,18 @@ def uploaded_file(filename):
     return send_from_directory(os.path.join(basedir, 'app', 'static'), filename)
 
 
-@main.route('/choice/<id>')
-def update_count(id):
+@main.route('/choice/<winner>-<loser>')
+def update_count(winner, loser):
     Session = sessionmaker()
     engine = create_engine('sqlite:///' + os.path.join(basedir, 'data-dev.sqlite'))
     Session.configure(bind=engine)
     session = Session()
 
-    curr_usr = session.query(Post).get(id)
-    session.query(Post).filter_by(id=id).update({'total_votes': curr_usr.total_votes+1})
+    curr_usr = session.query(Post).get(winner)
+    loser_guy = session.query(Post).get(loser)
+    session.query(Post).filter_by(id=winner).update({'total_votes': curr_usr.total_votes+1})
     session.commit()
+    flash("{} has {} votes and {} has {} votes".format(curr_usr.description, curr_usr.total_votes, loser_guy.description, loser_guy.total_votes))
     return redirect(url_for('main.index'))
 
 
