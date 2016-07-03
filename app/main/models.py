@@ -16,6 +16,3 @@ class Post(db.Model):
         return '<Post {}>'.format(self.id)
 
 
-# class Count(db.Model):
-#     __tablename__  = 'COUNT_TBL'
-#     count = db.Column(db.Integer)

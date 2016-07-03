@@ -1,5 +1,5 @@
 import os
-from flask import render_template, session, redirect, url_for, request, send_from_directory
+from flask import render_template, session, redirect, url_for, request, send_from_directory, flash
 from werkzeug.utils import secure_filename
 from datetime import datetime
 from . import main
@@ -64,15 +64,14 @@ def upload():
                         description=form.description.data, filename=filename)
 
             db.session.add(post)
-
-            return redirect(url_for('main.uploaded_file', filename=filename))
+            flash(form.description.data)
+            return redirect(url_for('main.index'))
     else:
         return render_template('upload.html', form=form)
 
 
 @main.route('/uploads/<filename>')
 def uploaded_file(filename):
-    # return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
     return send_from_directory(os.path.join(basedir, 'app', 'static'), filename)
 
 
