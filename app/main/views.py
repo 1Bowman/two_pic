@@ -21,13 +21,14 @@ def index():
 
     # hook up database functions
     Session = sessionmaker()
+
     # locate the db location; currently hardcoded to development database
-    engine = create_engine('sqlite:///{0}\data-dev.sqlite'.format(basedir))
+    engine = create_engine('sqlite:///' + os.path.join(basedir, 'data-dev.sqlite'))
     Session.configure(bind=engine)
     session = Session()
 
     post_count = session.query(func.count(Post.id)).scalar()  # count number of unique posts in the table
-    pic1 = Post.query.get(randint(1, post_count))
+    pic1 = Post.query.get(randint(1, post_count))  # fails if there is 1 or less entries in the database
     pic2 = None
     while pic2 == pic1 or pic2 is None:  # Don't pick the same file
         pic2 = Post.query.get(randint(1, post_count))
