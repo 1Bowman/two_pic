@@ -79,7 +79,7 @@ def uploaded_file(filename):
 @main.route('/choice/<id>')
 def update_count(id):
     Session = sessionmaker()
-    engine = create_engine('sqlite:///{0}\data-dev.sqlite'.format(basedir))
+    engine = create_engine('sqlite:///' + os.path.join(basedir, 'data-dev.sqlite'))
     Session.configure(bind=engine)
     session = Session()
 
