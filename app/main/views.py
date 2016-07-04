@@ -43,11 +43,15 @@ def index():
 def upload():
     form = UploadForm()
     if request.method == 'POST':
-        if 'image' not in request.files:
+        email = request.files['email']
+        image = request.files['image']
+
+        if '@' not in email:
+            # prompt for invalid email address
             return redirect(request.url)
 
-        # Check that an image was attached
-        image = request.files['image']
+        if 'image' not in request.files:
+            return redirect(request.url)
 
         if image.filename == '':
             return redirect(request.url)
@@ -64,8 +68,12 @@ def upload():
                         description=form.description.data, filename=filename)
 
             db.session.add(post)
-            flash(form.description.data)
+            flash("Successfully added {}".format(form.description.data))
+
             return redirect(url_for('main.index'))
+        else:
+            # flash(bad file extension)
+            return redirect(request.url)  # bad file name
     else:
         return render_template('upload.html', form=form)
 
@@ -87,6 +95,7 @@ def update_count(winner, loser):
     session.query(Post).filter_by(id=winner).update({'total_votes': curr_usr.total_votes+1})
     session.commit()
     flash("{} has {} votes and {} has {} votes".format(curr_usr.description, curr_usr.total_votes, loser_guy.description, loser_guy.total_votes))
+
     return redirect(url_for('main.index'))
 
 
