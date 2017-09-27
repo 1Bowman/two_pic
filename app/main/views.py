@@ -97,8 +97,3 @@ def update_count(winner, loser):
     flash("{} has {} votes and {} has {} votes".format(curr_usr.description, curr_usr.total_votes, loser_guy.description, loser_guy.total_votes))
 
     return redirect(url_for('main.index'))
-
-
-@main.route('/<name>')
-def name_yeah(name):
-    return '<h1>{} is a bitch.<h1>'.format(name)
